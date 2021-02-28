@@ -7,7 +7,8 @@ float sink(float val) {
 }
 int main() {
 
+	float tVal0 = 1.0;
 	float ans;
-	ans = msin();
+	ans = msin(tVal0);
 	sink(ans);
 }

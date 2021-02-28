@@ -154,6 +154,12 @@ def createCppRunFile(directory, modImport, taintCarried):
                 varsWritten.append('tVal'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'tVal);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'const float' or paramTypes[i] == 'float':
+                lineList.append('\t'+paramTypes[i]+' tVal'+str(count)+' = 1.0;\n')
+                count+=1
+                lineList.append('\t'+paramTypes[i]+' tVal'+str(count)+' = taint(tVal'+str(count-1)+');\n')
+                varsWritten.append('tVal'+str(count))
+                count+=1
             elif paramTypes[i] == 'const double' or paramTypes[i] == 'double':
                 lineList.append('\t'+paramTypes[i]+' tVal'+str(count)+' = 1.0;\n')
                 count+=1
@@ -280,6 +286,10 @@ def createCppRunFile(directory, modImport, taintCarried):
                 varsWritten.append('pyList'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'pyList);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'const float' or paramTypes[i] == 'float':
+                lineList.append('\t'+paramTypes[i]+' tVal'+str(count)+' = 1.0;\n')
+                varsWritten.append('tVal'+str(count))
+                count+=1
             elif paramTypes[i] == 'const std::vector<int>' or paramTypes[i] == 'std::vector<int>':
                 lineList.append('\t'+paramTypes[i]+' theVec'+str(count)+' = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};\n')
                 varsWritten.append('theVec'+str(count))
