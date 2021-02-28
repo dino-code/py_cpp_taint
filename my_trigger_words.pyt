@@ -28,6 +28,8 @@
 		"python_example.add(": {},
 		"python_example.subtract(": {},
 		"py11taylor.ts_sin(": {},
-		"py11taylor.ts_cos(": {}
+		"py11taylor.ts_cos(": {},
+		"mod1_binding.msin(": {},
+		"mod1_binding.mpow(": {}
 	}
 }
