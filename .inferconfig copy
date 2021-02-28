@@ -1,0 +1,26 @@
+{
+	"force-delete-results-dir": true,
+	"quandary-sources": [
+		{
+			"procedure": "taint",
+			"kind": "Other",
+			"index": "0"
+		},
+		{
+			"procedure": "PyObject_CallObject",
+			"kind": "Other"
+		}
+	],
+	"quandary-sinks": [
+		{
+			"procedure": "PyObject_CallObject",
+			"kind": "Other"
+		},
+		{
+			"procedure": "sink",
+			"kind": "Other"
+		}
+	],
+	"quandary-sanitizers": [],
+	"quandary-endpoints": []
+}

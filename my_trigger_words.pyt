@@ -4,10 +4,8 @@
 		"input(",
 		"taint(",
 		"request.form",
-		"wrap.add(",
-		"pybindings.add(",
-		"python_example.add(",
-		"python_example.subtract("
+		"py11taylor.ts_sin(",
+		"py11taylor.ts_cos("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
@@ -30,6 +28,8 @@
 		"hello.greet(": {},
 		"example.add(": {},
 		"python_example.add(": {},
-		"python_example.subtract(": {}
+		"python_example.subtract(": {},
+		"py11taylor.ts_sin(": {},
+		"py11taylor.ts_cos(": {}
 	}
 }
