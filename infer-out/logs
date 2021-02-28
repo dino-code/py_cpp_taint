@@ -1,0 +1,76 @@
+[15739][      debug] Loading models took 18.05ms
+[15744][      debug] Sqlite write daemon: starting up
+[15744][      debug] Sqlite write daemon: set up complete, waiting for connections
+[15739][environment] CWD = /Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint
+[15739][environment] Read configuration in /Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/.inferconfig
+[15739][environment] Project root = /Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint
+[15739][environment] INFER_ARGS =   @/var/folders/74/d3dk8ghs1sn2kdcw5qxgr2w80000gn/T/args.tmp.02cc81
+[15739][environment] command line arguments:   infer-run --quandary-only -- g++ -Wall -shared
+[15739][environment]                           -framework Python -std=c++14 -undefined
+[15739][environment]                           dynamic_lookup
+[15739][environment]                           -I/usr/local/Cellar/python@3.9/3.9.2/Frameworks/Python.framework/Versions/3.9/include/python3.9
+[15739][environment]                           -I/usr/local/Cellar/pybind11/2.6.2/libexec/lib/python3.9/site-packages/pybind11/include
+[15739][environment]                           TestPrograms/pybind_tests/temp_run.cpp
+[15739][environment] Could not retrieve available memory (possibly not on Linux)
+[15739][environment] Active checkers: quandary (C/C++/ObjC, Java)
+[15739][environment] Scheduler: file
+[15739][environment] Cores used: 6
+[15739][environment] Infer version v1.0.0-03b330214
+[15739][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[15739][environment] 
+[15739][   progress] Capturing in make/cc mode...
+[15739][      debug] 
+[15739][      debug] *** Beginning capture of file /Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/TestPrograms/pybind_tests/temp_run.cpp ***
+[15739][      debug] Elapsed: 3.514s.
+[15739][      debug] 
+[15739][ extern err] Error: the following clang command did not run successfully:
+[15739][ extern err]     /usr/local/lib/infer/facebook-clang-plugins/clang/install/bin/clang-10
+[15739][ extern err]     @/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/infer-out/tmp/clang_command_.tmp.e4d5f4.txt
+[15739][ extern err]   ++Contents of '/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/infer-out/tmp/clang_command_.tmp.e4d5f4.txt':
+[15739][ extern err]     "-cc1" "-load"
+[15739][ extern err]     "/usr/local/lib/infer/infer/bin/../../facebook-clang-plugins/libtooling/build/FacebookClangPlugin.dylib"
+[15739][ extern err]     "-add-plugin" "BiniouASTExporter" "-plugin-arg-BiniouASTExporter" "-"
+[15739][ extern err]     "-plugin-arg-BiniouASTExporter" "PREPEND_CURRENT_DIR=1"
+[15739][ extern err]     "-plugin-arg-BiniouASTExporter" "MAX_STRING_SIZE=65535" "-cc1" "-triple"
+[15739][ extern err]     "x86_64-apple-macosx10.16.0" "-Wdeprecated-objc-isa-usage"
+[15739][ extern err]     "-Werror=deprecated-objc-isa-usage" "-emit-obj" "-mrelax-all"
+[15739][ extern err]     "-disable-free" "-disable-llvm-verifier" "-discard-value-names"
+[15739][ extern err]     "-main-file-name" "temp_run.cpp" "-mrelocation-model" "pic" "-pic-level"
+[15739][ extern err]     "2" "-mthread-model" "posix" "-mframe-pointer=all" "-fno-rounding-math"
+[15739][ extern err]     "-masm-verbose" "-munwind-tables" "-target-sdk-version=11.1"
+[15739][ extern err]     "-target-cpu" "penryn" "-dwarf-column-info" "-debugger-tuning=lldb"
+[15739][ extern err]     "-target-linker-version" "556.6" "-resource-dir"
+[15739][ extern err]     "/usr/local/lib/infer/facebook-clang-plugins/clang/install/lib/clang/10.0.1"
+[15739][ extern err]     "-isysroot"
+[15739][ extern err]     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk"
+[15739][ extern err]     "-include"
+[15739][ extern err]     "/usr/local/lib/infer/infer/bin/../lib/clang_wrappers/global_defines.h"
+[15739][ extern err]     "-I"
+[15739][ extern err]     "/usr/local/Cellar/python@3.9/3.9.2/Frameworks/Python.framework/Versions/3.9/include/python3.9"
+[15739][ extern err]     "-I"
+[15739][ extern err]     "/usr/local/Cellar/pybind11/2.6.2/libexec/lib/python3.9/site-packages/pybind11/include"
+[15739][ extern err]     "-stdlib=libc++" "-internal-isystem"
+[15739][ extern err]     "/usr/local/lib/infer/infer/bin/../../facebook-clang-plugins/clang/install/bin/../include/c++/v1"
+[15739][ extern err]     "-internal-isystem"
+[15739][ extern err]     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/c++/v1"
+[15739][ extern err]     "-internal-isystem"
+[15739][ extern err]     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/local/include"
+[15739][ extern err]     "-internal-isystem"
+[15739][ extern err]     "/usr/local/lib/infer/facebook-clang-plugins/clang/install/lib/clang/10.0.1/include"
+[15739][ extern err]     "-internal-externc-isystem"
+[15739][ extern err]     "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include"
+[15739][ extern err]     "-Wall" "-Wno-ignored-optimization-argument" "-Wno-everything"
+[15739][ extern err]     "-std=c++14" "-fdeprecated-macro" "-fdebug-compilation-dir"
+[15739][ extern err]     "/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint"
+[15739][ extern err]     "-ferror-limit" "19" "-fmessage-length" "0" "-stack-protector" "1"
+[15739][ extern err]     "-fblocks" "-fencode-extended-block-signature"
+[15739][ extern err]     "-fregister-global-dtors-with-atexit" "-fgnuc-version=4.2.1"
+[15739][ extern err]     "-fobjc-runtime=macosx-10.16.0" "-fcxx-exceptions" "-fexceptions"
+[15739][ extern err]     "-fmax-type-align=16" "-fdiagnostics-show-option" "-o"
+[15739][ extern err]     "/var/folders/74/d3dk8ghs1sn2kdcw5qxgr2w80000gn/T/temp_run-ebfbff.o" "-x"
+[15739][ extern err]     "c++" "TestPrograms/pybind_tests/temp_run.cpp" "-O0" "-include"
+[15739][ extern err]     "/usr/local/lib/infer/infer/bin/../lib/clang_wrappers/global_defines.h"
+[15739][ extern err]     "-Wno-everything"
+[15739][ extern err]   
+[15739][ extern err] 
+[15744][      debug] Sqlite write daemon: terminating

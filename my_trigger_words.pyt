@@ -3,9 +3,7 @@
 		"form(",
 		"input(",
 		"taint(",
-		"request.form",
-		"py11taylor.ts_sin(",
-		"py11taylor.ts_cos("
+		"request.form"
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
