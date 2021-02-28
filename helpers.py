@@ -41,10 +41,16 @@ def getCppTypes(directory, modImport):
     # first, find the line where the function in question is declared or defined.
     with open(directory+modFile, 'r') as q:
         for line in q.readlines():
-            if func in line:
+            # checks to make sure the string search is not tripped up by includes or in similarly named functions
+
+            if func[-1] == '(':
+                dist = len(func)-1
+            else:
+                dist = len(func)
+            if func in line and '#' not in line and line[line.find(func)+dist] == '(':
                 theLine = line
                 break
-    
+
     # take the line that was found and grab the return type from it.
     returnType = theLine[:theLine.find(' ')]
 
@@ -147,6 +153,12 @@ def createCppRunFile(directory, modImport, taintCarried):
                 varsWritten.append('theVec'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'theVec);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'uint64_t' or paramTypes[i] == 'const uint64_t':
+                lineList.append('\t'+paramTypes[i]+' val'+str(count)+' = 1;\n')
+                count+=1
+                lineList.append('\t'+paramTypes[i]+' val'+str(count)+' = taint(val'+str(count-1)+');\n')
+                varsWritten.append('val'+str(count))
+                count+=1
             elif paramTypes[i] == 'const int' or paramTypes[i] == 'int':
                 lineList.append('\t'+paramTypes[i]+' tVal'+str(count)+' = 1;\n')
                 count+=1
@@ -295,6 +307,10 @@ def createCppRunFile(directory, modImport, taintCarried):
                 varsWritten.append('theVec'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'theVec);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'uint64_t' or paramTypes[i] == 'const uint64_t':
+                lineList.append('\t'+paramTypes[i]+' val'+str(count)+' = 1;\n')
+                varsWritten.append('val'+str(count))
+                count+=1
             elif paramTypes[i] == 'const std::vector<std::vector<int>>' or paramTypes[i] == 'std::vector<std::vector<int>>' or paramTypes[i] == 'const vector<vector<int>>' or paramTypes[i] == 'vector<svector<int>>':
                 lineList.append('\t'+paramTypes[i]+' theVec'+str(count)+' = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18};\n')
                 varsWritten.append('theVec'+str(count))

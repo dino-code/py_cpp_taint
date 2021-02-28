@@ -3,7 +3,9 @@
 		"form(",
 		"input(",
 		"taint(",
-		"request.form"
+		"request.form",
+		"packbind.pack(",
+		"packbind.unpack("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
@@ -30,6 +32,8 @@
 		"py11taylor.ts_sin(": {},
 		"py11taylor.ts_cos(": {},
 		"mod1_binding.msin(": {},
-		"mod1_binding.mpow(": {}
+		"mod1_binding.mpow(": {},
+		"packbind.pack(": {},
+		"packbind.unpack(": {}
 	}
 }
