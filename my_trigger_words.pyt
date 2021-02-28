@@ -5,7 +5,10 @@
 		"taint(",
 		"request.form",
 		"packbind.pack(",
-		"packbind.unpack("
+		"packbind.unpack(",
+		"example.square(",
+		"sumandsort.sum_vec(",
+		"sumandsort.sort_vector("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
@@ -34,6 +37,9 @@
 		"mod1_binding.msin(": {},
 		"mod1_binding.mpow(": {},
 		"packbind.pack(": {},
-		"packbind.unpack(": {}
+		"packbind.unpack(": {},
+		"example.square(": {},
+		"sumandsort.sum_vec(": {},
+		"sumandsort.sort_vector(": {}
 	}
 }
