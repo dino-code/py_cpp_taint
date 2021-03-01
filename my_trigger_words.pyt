@@ -5,7 +5,8 @@
 		"taint(",
 		"request.form",
 		"pybind_test.factorial(",
-		"pybind_test.add_arrays("
+		"pybind_test.add_arrays(",
+		"fibolib.fib("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
@@ -41,6 +42,7 @@
 		"pybind11_example.sum_arrays(": {},
 		"pybind11_example.product_arrays(": {},
 		"pybind_test.factorial(": {},
-		"pybind_test.add_arrays(": {}
+		"pybind_test.add_arrays(": {},
+		"fibolib.fib(": {}
 	}
 }
