@@ -4,11 +4,8 @@
 		"input(",
 		"taint(",
 		"request.form",
-		"packbind.pack(",
-		"packbind.unpack(",
-		"example.square(",
-		"sumandsort.sum_vec(",
-		"sumandsort.sort_vector("
+		"pybind_test.factorial(",
+		"pybind_test.add_arrays("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},
@@ -40,6 +37,10 @@
 		"packbind.unpack(": {},
 		"example.square(": {},
 		"sumandsort.sum_vec(": {},
-		"sumandsort.sort_vector(": {}
+		"sumandsort.sort_vector(": {},
+		"pybind11_example.sum_arrays(": {},
+		"pybind11_example.product_arrays(": {},
+		"pybind_test.factorial(": {},
+		"pybind_test.add_arrays(": {}
 	}
 }

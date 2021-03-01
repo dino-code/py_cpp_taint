@@ -57,7 +57,6 @@ def getCppTypes(directory, modImport):
     # find the parameters passed to the function
     params = theLine[theLine.find('(')+1:theLine.find(')')]
     params = params.split(',')
-
     # remove spaces
     for i in range(len(params)):
         if params[i][0] == ' ':
@@ -131,6 +130,13 @@ def createCppRunFile(directory, modImport, taintCarried):
                 count+=1
                 lineList.append('\t'+paramTypes[i]+' theVec'+str(count)+' = taint(theVec'+str(count-1)+');\n')
                 varsWritten.append('theVec'+str(count))
+                count+=1
+                #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'theVec);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'py::array_t<double>' or paramTypes[i] == 'const py::array_t<double>':
+                lineList.append('\t'+paramTypes[i]+' arr'+str(count)+'(0, nullptr);\n')
+                count+=1
+                lineList.append('\t'+paramTypes[i]+' arr'+str(count)+' = taint(arr'+str(count-1)+');\n')
+                varsWritten.append('arr'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'theVec);\n\tsink(ans);\n}')
             elif paramTypes[i] == 'py::list':
@@ -307,6 +313,10 @@ def createCppRunFile(directory, modImport, taintCarried):
                 varsWritten.append('theVec'+str(count))
                 count+=1
                 #lineList.append('\t'+returnType+' ans;\n\tans = '+modImport[1][modImport[1].find('.')+1:]+'theVec);\n\tsink(ans);\n}')
+            elif paramTypes[i] == 'py::array_t<double>' or paramTypes[i] == 'const py::array_t<double>':
+                lineList.append('\t'+paramTypes[i]+' arr'+str(count)+'(0, nullptr);\n')
+                varsWritten.append('arr'+str(count))
+                count+=1
             elif paramTypes[i] == 'uint64_t' or paramTypes[i] == 'const uint64_t':
                 lineList.append('\t'+paramTypes[i]+' val'+str(count)+' = 1;\n')
                 varsWritten.append('val'+str(count))
