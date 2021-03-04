@@ -960,7 +960,7 @@ def getOutput(file):
     if file.type == "py":
         cmd = ["python3", "-m", "pyt", "-t", "my_trigger_words.pyt", file.runFile]
         result = subprocess.run(cmd, stdout=subprocess.PIPE)
-        
+
         return str(result.stdout)
     
     if file.type == "cpp":

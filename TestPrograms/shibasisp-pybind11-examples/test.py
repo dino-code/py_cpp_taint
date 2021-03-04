@@ -5,7 +5,9 @@ import hello
 myname = "Joe"
 myname = taint(myname)
 
-hello.greet(myname)
+ans1 = hello.greet(myname)
+
+print(ans1)
 
 def taint(val):
     return val

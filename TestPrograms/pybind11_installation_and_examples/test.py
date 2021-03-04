@@ -15,14 +15,18 @@ c = taint(c)
 d = 5
 d = taint(d)
 
-example.square(d)
+ans1 = example.square(d)
 
 e = [1, 2, 3, 4, 5]
 e = taint(e)
 
-sumandsort.sum_vec(e)
+ans2 = sumandsort.sum_vec(e)
 
-sumandsort.sort_vector(e)
+ans3 = sumandsort.sort_vector(e)
+
+print(ans1)
+print(ans2)
+print(ans3)
 
 def taint(x):
     return x

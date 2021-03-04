@@ -17,9 +17,9 @@ b = 2
 a = taint(a)
 b = taint(b)
 
-print(b)
-
 example.add(a, b)
+
+print(example)  # have to do it like this because of some bug
 
 
 def taint(x):

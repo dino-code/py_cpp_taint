@@ -9,5 +9,8 @@ if __name__ == '__main__':
     # this portion must be modified as well.
     s = "hello world"
     s = taint(s)
-    logger.cpp_print(s)
+    
+    ans1 = logger.cpp_print(s)
+    
+    print(ans1)
     # here the C++ function is called

@@ -8,6 +8,8 @@ b = taint(b)
 
 pybindings.add(a, b)
 
+print(pybindings)
+
 #print("1 + 2 = {}".format(pybindings.add(1, 2)))
 
 # Use the adder class

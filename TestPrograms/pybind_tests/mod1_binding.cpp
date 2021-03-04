@@ -18,7 +18,6 @@ float mpow( float a, float b )
 
 PYBIND11_MODULE(mod1_binding, m)
 {
-
     m.doc() = R"pbdoc(
         Bindings for sample module 1
     )pbdoc";

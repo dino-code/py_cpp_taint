@@ -15,6 +15,9 @@ def main():
     print("Original: {}".format(f))
     print(" Network: {}".format(hex(netf)))
     print("Unpacked: {}".format(f2))
+    
+    print(netf)
+    print(f2)
 
 if __name__ == '__main__':
     main()
