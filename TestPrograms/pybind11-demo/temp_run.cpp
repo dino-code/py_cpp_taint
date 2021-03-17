@@ -2,19 +2,14 @@
 #include <vector>
 namespace py = pybind11;
 
-int taint(int val) {
-	return val;
-}
-int sink(int val) {
+ sink( val) {
 	return val;
 }
 int main() {
 
-	int tVal0 = 1;
-	int tVal1 = taint(tVal0);
-	int tVal2 = 1;
-	int tVal3 = taint(tVal2);
-	int ans;
-	ans = add(tVal1, tVal3);
+	const std::string tVal0 = "hi";
+	int tVal1 = 1;
+    ans;
+	ans = Pet(tVal0, tVal1);
 	sink(ans);
 }

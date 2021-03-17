@@ -11,6 +11,9 @@ def test_pet():
     assert my_dog.get_hunger() == 5
     my_dog.go_for_a_walk()
     assert my_dog.get_hunger() == 6
+    
+def taint(x):
+    return x
 
 a = 1
 b = 2
@@ -21,6 +24,12 @@ example.add(a, b)
 
 print(example)  # have to do it like this because of some bug
 
+my_dog = example.Pet('Pluto', 5)
+print(my_dog.get_name())
+print(my_dog.get_hunger());
 
-def taint(x):
-    return x
+my_dog.go_for_a_walk()
+print(my_dog.get_hunger());
+
+
+

@@ -3,7 +3,9 @@
 		"form(",
 		"input(",
 		"taint(",
-		"request.form"
+		"request.form",
+		"example.length(",
+		"example.add("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},

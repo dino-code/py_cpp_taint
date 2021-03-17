@@ -881,7 +881,10 @@ def cppParse(file, pyFiles, output):
     isVulnerable = False
     hasFFCall = False
     tempList = []
-    sourcesAndSinks = []                
+    sourcesAndSinks = []  
+    
+    for i in output.split('\\n'):
+        print(i)              
 
     # In this part, we need to 
     if "No issues found" in output:
