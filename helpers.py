@@ -506,7 +506,6 @@ def pyParse(file, cppFiles, output):
                 if combo not in file.fileSinks:
                     file.fileSinks.append(combo)
                     hasFFCall = True
-
     
     else:
         isVulnerable = True

@@ -90,8 +90,7 @@ while len(stack)>0:
                         else:
                             file.passesForward = False
                             file.taintPassedTo = ""
-                #file.passesForward = True
-                #file.taintPassedTo = mod[0]
+                
             tempCppFile.taintPassedFrom = file.filename
             file.exploredSink = mod
 

@@ -2,23 +2,35 @@ import subprocess
 
 class Program:
     
-    def __init__(self, filename):
+    def __init__(self, filename, runFilename):
         self.filename = filename
+        self.runFilename =  runFilename  # the file that PyT or Quandary will analyze
         self.type = filename[filename.find('.')+1:len(filename)]
         self.sourcesAndSinks = []
         self.fileSinks = []
         self.exploredSink = ('example', 'example')
-        self.runFile = ''   # the file that PyT or Quandary will analyze
+        
         self.analyzed = False
         self.passesForward = False
         self.passesBackward = False
         self.taintPassedTo = "No taint passed" # if true, a tainted variable has been passed to this program
         self.taintPassedFrom = "Received no taint"
+        
         self.hasFFCall = False
         self.isVulnerable = False
+        self.pyFiles = []
+        self.cppFiles = []
 
-    def multilingualAnalysis(self):
-        pass
+    def analyze(self):
+        # this function analyzes the program and sets hasFFCall and isVulnerable appropriately
+        output = getMonolingualOutput(self)
+
+        if output != "Not a relevant file":
+            if self.type == "py":
+                self.pyParse(cppFiles, output)
+            if self.type == "cpp":
+                self.cppParse(pyFiles, output)
+        
 
     def pySSFinder(type, output):
         tempSourcesAndSinks = []
@@ -55,32 +67,7 @@ class Program:
                 for mod in modNames:
                     if mod in line and 'import' not in line and '#' not in line and line[line.find(mod):line.find('(')+1] != '':
                         print(line)
-                        self.fileSinks.append((mod+'.cpp', line[line.find(mod):line.find('(')+1]))
-
-    def getOutput(file):
-        # returns a string of the output from running Quandary or PyT
-        if file.type == "py":
-            cmd = ["python3", "-m", "pyt", "-t", "my_trigger_words.pyt", file.runFile]
-            result = subprocess.run(cmd, stdout=subprocess.PIPE)
-
-            return str(result.stdout)
-        
-        if file.type == "cpp":
-            # include code here that differentiates between Boost and Pybind11
-            cmd = "infer-run --quandary-only -- g++ -Wall -shared -framework Python -std=c++14 -undefined dynamic_lookup `python3 -m pybind11 --includes` "+file.runFile
-            #cmd = "infer-run --quandary-only -- g++ -lm -pthread -O3 -std=c++14 -march=native -Wall -funroll-loops -Wno-unused-result -shared -Wl,-export_dynamic -L/usr/local/Cellar/boost-python3/1.75.0/lib -lboost_python39 -L/usr/local/Cellar/python@3.9/3.9.2/Frameworks/Python.framework/Versions/3.9/lib/ -lpython3.9 "+file.runFile
-            result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE)
-
-            return str(result.stdout)
-
-
-        return "Not a relevant file"  
-
-    def parseOutput(output, file, cppFiles, pyFiles):
-        if file.type == "py":
-            return pyParse(file, cppFiles, output)
-        if file.type == "cpp":
-            return cppParse(file, pyFiles, output)  
+                        self.fileSinks.append((mod+'.cpp', line[line.find(mod):line.find('(')+1]))   
     
     def pyParse(file, cppFiles, output):
         file.hasFFCall = False
@@ -133,10 +120,10 @@ class Program:
             else:
                 file.hasFFCall = False
 
-    def cppParse(file, pyFiles, output):
+    def cppParse(self, pyFiles, output):
         modFiles = []
-        file.isVulnerable = False
-        file.hasFFCall = False
+        self.isVulnerable = False
+        self.hasFFCall = False
         tempList = []
         sourcesAndSinks = []  
         
@@ -146,9 +133,9 @@ class Program:
         # In this part, we need to 
         if "No issues found" in output:
 
-            if file.analyzed is False:
-                file.analyzed = True
-                with open(file.filename) as f:
+            if self.analyzed is False:
+                self.analyzed = True
+                with open(self.filename) as f:
                     for num, line in enumerate(f, 1):
                         if "PyImport_ImportModule" in line:
                             quotes = line.find('\"')+1
@@ -213,4 +200,21 @@ class Program:
             
             file.analyzed = True
 
-    
+def getMonolingualOutput(file):
+        # returns a string of the output from running Quandary (C++) or PyT (Py)
+        if file.type == "py":
+            cmd = ["python3", "-m", "pyt", "-t", "my_trigger_words.pyt", file.runFilename]
+            result = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            return str(result.stdout)
+        
+        if file.type == "cpp":
+            # include code here that differentiates between Boost and Pybind11
+            cmd = "infer-run --quandary-only -- g++ -Wall -shared -framework Python -std=c++14 -undefined dynamic_lookup `python3 -m pybind11 --includes` "+file.runFile
+            #cmd = "infer-run --quandary-only -- g++ -lm -pthread -O3 -std=c++14 -march=native -Wall -funroll-loops -Wno-unused-result -shared -Wl,-export_dynamic -L/usr/local/Cellar/boost-python3/1.75.0/lib -lboost_python39 -L/usr/local/Cellar/python@3.9/3.9.2/Frameworks/Python.framework/Versions/3.9/lib/ -lpython3.9 "+file.runFile
+            result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE)
+
+            return str(result.stdout)
+
+
+        return "Not a relevant file"
