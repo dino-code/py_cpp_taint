@@ -5,7 +5,8 @@
 		"taint(",
 		"request.form",
 		"example.length(",
-		"example.add("
+		"example.add(",
+		"example.modify("
 	],
 	"sinks": {
 		"fibonacci.compute_fibonacci(": {},

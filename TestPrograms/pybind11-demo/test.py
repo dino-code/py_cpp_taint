@@ -26,10 +26,10 @@ print(example)  # have to do it like this because of some bug
 
 my_dog = example.Pet('Pluto', 5)
 print(my_dog.get_name())
-print(my_dog.get_hunger());
+print(my_dog.get_hunger())
 
 my_dog.go_for_a_walk()
-print(my_dog.get_hunger());
+print(my_dog.get_hunger())
 
 
 
