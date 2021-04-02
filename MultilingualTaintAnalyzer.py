@@ -1,6 +1,5 @@
-from os import listdir
-from os.path import isfile, join
-import Program
+import directoryManager
+import program
 
 class MultilingualTaintAnalyzer:
     stack = []
@@ -8,15 +7,25 @@ class MultilingualTaintAnalyzer:
     path = []
 
     def multilingualAnalyze(self, start_directory, start_filename):
-        cppFiles, pyFiles = getDirectoryFiles(start_directory)
+        # DirectoryManager keeps track of important information necessary for this function
+        # it also contains necessary functions to aid in this algorithm's completion.
+        dirManager = directoryManager.DirectoryManager(start_directory)
+        dirManager.getDirectoryFiles()
 
-        start_prog = Program.Program(start_directory+start_filename)
-        start_prog.runFilename = start_directory+start_filename    # tempFile is the file that Quandary/PyT will be run on
+        if start_filename in dirManager.pyFiles:
+            start_prog = program.pyProgram(start_directory+start_filename, start_directory+start_filename)
+        elif start_filename in dirManager.cppFiles:
+            start_prog = program.cppProgram(dirManager.rootDirectory+start_filename, dirManager.rootDirectory+start_filename)
+
+
+        #start_prog = program.Program(start_directory+start_filename)
+        #start_prog.runFilename = start_directory+start_filename    # tempFile is the file that Quandary/PyT will be run on
 
         self.stack.append(start_prog)
         self.exploredFiles.append(start_directory+start_filename)
 
-        print(cppFiles)
+        print(dirManager.cppFiles)
+        print(dirManager.pyFiles)
 
         iter = 0
         while len(self.stack)>0:
@@ -25,19 +34,20 @@ class MultilingualTaintAnalyzer:
             print()
             iter+=1
 
-            
-
-            hasFFCall, isVulnerable = getCallList(file, cppFiles, pyFiles) # call list is the list of other files called from this program
-
             print(str(iter)+')', "Current File:", file.filename)
-            print("Has a foreign function call:", hasFFCall)
-            print("Is vulnerable:", isVulnerable)
+            print("Has a foreign function call:", file.hasFFCall)
+            print("Is vulnerable:", file.isVulnerable)
             print()
             print("Sources and Sinks:", file.sourcesAndSinks)
             print("File sinks:", file.fileSinks)
             print()
 
-            if hasFFCall:
+            if file.type == 'py':
+                file.analyze(dirManager.cppFiles)
+            if file.type == 'cpp':
+                file.analyze(dirManager.pyFiles)
+
+            if file.hasFFCall:
                 # if the file has a foreign function call, then the program can delve deeper.
                 mod = file.fileSinks[0]
 
@@ -46,9 +56,9 @@ class MultilingualTaintAnalyzer:
                 # if the file has not yet been explored, execute this code
                 if mod[0][len(mod[0])-3:] == "cpp":
                     # if the file sink is a cpp file
-                    tempCppFile = Program(start_directory+mod[0])
+                    tempCppFile = program.cppProgram(start_directory+mod[0])
                     
-                    if isVulnerable:
+                    if file.isVulnerable:
                         for i in file.sourcesAndSinks[-1]:
                             if file.type == 'py':
                                 if mod[1] == i[1]:
@@ -62,13 +72,13 @@ class MultilingualTaintAnalyzer:
                     tempCppFile.taintPassedFrom = file.filename
                     file.exploredSink = mod
 
-                    tempCppFile.runFile = h.createCppRunFile(start_directory, mod, file.passesForward) # send function call as argument because contains mod name
+                    tempCppFile.runFile = dirManager.createCppRunFile(mod, file.passesForward) # send function call as argument because contains mod name
                     self.stack.append(tempCppFile)
                     self.exploredFiles.append(start_directory+mod[0])
                 else:
                     # if the file sink is a python file
-                    tempPyFile = Program(start_directory+mod[0])
-                    if isVulnerable and start_directory+mod[0]:
+                    tempPyFile = program.Program(start_directory+mod[0])
+                    if file.isVulnerable and start_directory+mod[0]:
                         for i in file.sourcesAndSinks[-1]:
                             print('mod'+str(mod[1]))
                             print('i '+str(i[1]))
@@ -92,10 +102,10 @@ class MultilingualTaintAnalyzer:
             else:
                 prevFile = self.stack[len(self.stack)-2]
 
-                if len(self.stack) > 1 and isVulnerable == True and prevFile.type == 'py':
-                    h.modifyPyTrigger(prevFile.exploredSink[1])
-                if len(self.stack) > 1 and isVulnerable == True and prevFile.type == 'cpp':
-                    h.modifyCppConfig(prevFile.exploredSink[1][0])
+                if len(self.stack) > 1 and file.isVulnerable == True and prevFile.type == 'py':
+                    dirManager.modifyPyTrigger(prevFile.exploredSink[1])
+                if len(self.stack) > 1 and file.isVulnerable == True and prevFile.type == 'cpp':
+                    dirManager.modifyCppConfig(prevFile.exploredSink[1][0])
 
                 if len(file.sourcesAndSinks) == 1:
                     if (file.sourcesAndSinks[-1][0][1] == 'sink(') or file.sourcesAndSinks[-1][0][1] == 'sink':
@@ -126,28 +136,15 @@ class MultilingualTaintAnalyzer:
             print(i)
         print()
         print()
-    
-    def monolingualAnalyze(self, file):
-
-        output = Program.getMonolingualOutput(file)
-
-        output = output.split('\\n')
-        
-        for i in output:
-            print(i)
-
-
-def getDirectoryFiles(directory):
-    # returns lists of CPP files and Python files
-    files = [f for f in listdir(directory) if isfile(join(directory, f)) and (".cpp" in f or ".py" in f)]
-    cppFiles = [f for f in files if ".cpp" in f]
-    pyFiles = [f for f in files if ".py" in f]
-
-    return cppFiles, pyFiles
 
 
 analyzer = MultilingualTaintAnalyzer()
 
-file = Program.Program('TestPrograms/01_py-list_cpp-vector/test.py', 'TestPrograms/01_py-list_cpp-vector/test.py')
+file = program.pyProgram('TestPrograms/01_py-list_cpp-vector/test.py', 'TestPrograms/01_py-list_cpp-vector/test.py')
 
-analyzer.monolingualAnalyze(file)
+print("Starting Up\n\n")
+
+for i in file.getMonolingualOutput().split('\\n'):
+    print(i)
+
+analyzer.multilingualAnalyze('/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/TestPrograms/01_py-list_cpp-vector/', 'test.py')

@@ -1,42 +1,10 @@
 import sys
-from os import listdir
-from os.path import isfile, join
-import os
 from program import Program
-import subprocess
 import helpers as h
-import time
-import PySimpleGUI as sg
-'''
-while True:
-    layout = [  [sg.Text("Name your start directory")],     # Part 2 - The Layout
-            [sg.Input()],
-            [sg.Text("Name your start file")],
-            [sg.Input()],
-            [sg.Button('Begin'), sg.Button('Quit')] ]
-
-    window = sg.Window('Py_CPP_Taint Program Parameters', layout, size=(500,400))      # Part 3 - Window Defintion
-
-    # Display and interact with the Window
-    event, values = window.read()                   # Part 4 - Event loop or Window.read call
-
-    if event == sg.WINDOW_CLOSED or event == 'Quit':
-        break
-
-    window.close()
-
-    sg.set_options(debug_win_size=(150,50))
-    sg.easy_print(do_not_reroute_stdout=False)
-'''
     
     # Get start directory and start file
 start_directory = sys.argv[1]+'/'   # "deepMultilingualMatrixMultiplier"
 start_file = sys.argv[2]        # "main.py"
-
-'''
-start_directory = values[0]+'/'
-start_file = values[1]
-'''
 
 stack = []
 exploredFiles = []
