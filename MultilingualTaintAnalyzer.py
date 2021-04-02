@@ -25,6 +25,8 @@ class MultilingualTaintAnalyzer:
             print()
             iter+=1
 
+            
+
             hasFFCall, isVulnerable = getCallList(file, cppFiles, pyFiles) # call list is the list of other files called from this program
 
             print(str(iter)+')', "Current File:", file.filename)
