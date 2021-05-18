@@ -6,7 +6,9 @@ class MultilingualTaintAnalyzer:
     exploredFiles = []
     path = []
 
-    def multilingualAnalyze(self, start_directory, start_filename):
+    def analyze(self, start_directory, start_filename):
+        # This analyze function takes a start_directory and start_filename and traces taint through a program.
+        
         # DirectoryManager keeps track of important information necessary for this function
         # it also contains necessary functions to aid in this algorithm's completion.
         dirManager = directoryManager.DirectoryManager(start_directory)
@@ -17,15 +19,8 @@ class MultilingualTaintAnalyzer:
         elif start_filename in dirManager.cppFiles:
             start_prog = program.cppProgram(dirManager.rootDirectory+start_filename, dirManager.rootDirectory+start_filename)
 
-
-        #start_prog = program.Program(start_directory+start_filename)
-        #start_prog.runFilename = start_directory+start_filename    # tempFile is the file that Quandary/PyT will be run on
-
         self.stack.append(start_prog)
         self.exploredFiles.append(start_directory+start_filename)
-
-        print(dirManager.cppFiles)
-        print(dirManager.pyFiles)
 
         iter = 0
         while len(self.stack)>0:
@@ -49,7 +44,7 @@ class MultilingualTaintAnalyzer:
 
             if file.hasFFCall:
                 # if the file has a foreign function call, then the program can delve deeper.
-                mod = file.fileSinks[0]
+                mod = file.fileSinks[0]     # grab the next file after the current file.
 
                 # each mod is a foreign module. If a file has one foreign function call, then len(file.fileSinks) == 1
                 # mod[0] is the foreign file name, while mod[1] is the function called from the foreign file
@@ -72,7 +67,7 @@ class MultilingualTaintAnalyzer:
                     tempCppFile.taintPassedFrom = file.filename
                     file.exploredSink = mod
 
-                    tempCppFile.runFile = dirManager.createCppRunFile(mod, file.passesForward) # send function call as argument because contains mod name
+                    tempCppFile.runFilename = dirManager.createCppRunFile(mod, file.passesForward) # send function call as argument because contains mod name
                     self.stack.append(tempCppFile)
                     self.exploredFiles.append(start_directory+mod[0])
                 else:
@@ -92,7 +87,7 @@ class MultilingualTaintAnalyzer:
                     tempPyFile.taintPassedFrom = file.filename
                     file.exploredSink = mod
 
-                    tempPyFile.runFile = h.createPyRunFile(start_directory, mod, file.passesForward)
+                    tempPyFile.runFilename = dirManager.createPyRunFile(start_directory, mod, file.passesForward)
                     self.stack.append(tempPyFile)
                     self.exploredFiles.append(start_directory+mod[0]) 
 
@@ -137,14 +132,32 @@ class MultilingualTaintAnalyzer:
         print()
         print()
 
+#analyzer = MultilingualTaintAnalyzer()
 
-analyzer = MultilingualTaintAnalyzer()
-
-file = program.pyProgram('TestPrograms/01_py-list_cpp-vector/test.py', 'TestPrograms/01_py-list_cpp-vector/test.py')
+'''
+file = program.pyProgram('TestPrograms/pybind11-examples/03-Constructors/ctor.py', 'TestPrograms/pybind11-examples/03-Constructors/ctor.py')
 
 print("Starting Up\n\n")
 
-for i in file.getMonolingualOutput().split('\\n'):
-    print(i)
+file.getMonolingualOutput()
+'''
 
-analyzer.multilingualAnalyze('/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/TestPrograms/01_py-list_cpp-vector/', 'test.py')
+'''
+
+file2 = program.cppProgram('TestPrograms/pybind11-examples/02-ExposingClasses/temp_run.cpp', 'TestPrograms/pybind11-examples/02-ExposingClasses/temp_run.cpp')
+
+file2.getMonolingualOutput()
+'''
+
+
+# TestPrograms/cmake_cpp_pybind11_tutorial/
+
+#file = program.pyProgram('TestPrograms/cmake_cpp_pybind11_tutorial/test.py', 'TestPrograms/cmake_cpp_pybind11_tutorial/test.py')
+
+#file.getMonolingualOutput()
+
+file2 = program.cppProgram('TestPrograms/cmake_cpp_pybind11_tutorial/temp_run.cpp', 'TestPrograms/cmake_cpp_pybind11_tutorial/temp_run.cpp')
+
+file2.getMonolingualOutput()
+
+#analyzer.analyze('/Users/dinobecaj/Documents/ComputerScienceMS/LyonsWork/python_cpp_static_analysis/py_cpp_taint/TestPrograms/pybind11-examples/02-ExposingClasses/', 'classes.py')

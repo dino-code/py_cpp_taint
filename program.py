@@ -5,7 +5,6 @@ class Program:
     def __init__(self, filename='', runFilename=''):
         self.filename = filename
         self.runFilename =  runFilename  # the file that PyT or Quandary will analyze
-        #self.type = filename[filename.find('.')+1:len(filename)]
         self.sourcesAndSinks = []
         self.fileSinks = []
         self.exploredSink = ('example', 'example')
@@ -17,46 +16,8 @@ class Program:
         self.taintPassedFrom = "Received no taint"
         
         self.hasFFCall = False
-        self.isVulnerable = False
-        #self.files = []      
-
-    def pySSFinder(type, output):
-        tempSourcesAndSinks = []
-        tempList = []
-
-        if type == "py":  
-            for line in output:
-                if "User input" in line:
-                    sourceName = line[line.find("\"")+1:len(line)-2]
-                    tempList.append(sourceName)
-
-                if "reaches" in line:
-                    sinkName = line[line.find("\"")+1:len(line)-2]
-                    tempList.append(sinkName)
-
-                    tempSourcesAndSinks.append((tempList[0], tempList[1]))
-                    tempList.clear()
-        else:
-            for i in output:
-                if "Other" in i:
-                    sourceName = i[8:i.find(')')-1]
-                    sinkName = i[i.find('Other', 15, len(i)-1)+6:i.rfind(')')-2]
-
-                    tempSourcesAndSinks.append((sourceName, sinkName))
-        
-        return tempSourcesAndSinks
-    
-    def newFindCalls(self, fileList):
-        modNames = [i[:i.find('.')] for i in fileList]
-        self.fileSinks = []
-
-        with open(self.filename, 'r') as f:
-            for line in f.readlines():
-                for mod in modNames:
-                    if mod in line and 'import' not in line and '#' not in line and line[line.find(mod):line.find('(')+1] != '':
-                        print(line)
-                        self.fileSinks.append((mod+'.cpp', line[line.find(mod):line.find('(')+1]))   
-
+        self.isVulnerable = False     
+ 
 class cppProgram(Program):
     
     def __init__(self, filename=None, runFilename=None):
@@ -166,6 +127,19 @@ class cppProgram(Program):
             
             self.analyzed = True
 
+    def getMonolingualOutput(self):
+
+        if self.type == "cpp":
+            # include code here that differentiates between Boost and Pybind11
+            cmd = "infer-run --quandary-only -- g++ -Wall -shared -framework Python -std=c++14 -undefined dynamic_lookup `python3 -m pybind11 --includes` "+self.runFilename
+            result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE)
+
+            for i in str(result.stdout).split('\\n'):
+                print(i)
+            return str(result.stdout)
+
+        return "Not a relevant file"
+
 class pyProgram(Program):
 
     def __init__(self, filename, runFilename):
@@ -225,7 +199,6 @@ class pyProgram(Program):
             
             self.sourcesAndSinks.append(adder)
 
-            #modNames = findFileCalls(file.sourcesAndSinks, cppFiles)
             if self.analyzed is False:
                 self.fileSinks = self.newFindCalls(cppFiles)
             
@@ -243,7 +216,6 @@ class pyProgram(Program):
             for line in f.readlines():
                 for mod in modNames:
                     if mod in line and 'import' not in line and '#' not in line and line[line.find(mod):line.find('(')+1] != '':
-                        print(line)
                         fileSinks.append((mod+'.cpp', line[line.find(mod):line.find('(')+1]))
         
         return fileSinks
@@ -277,8 +249,12 @@ class pyProgram(Program):
     def getMonolingualOutput(self):
 
         if self.type == "py":
-            cmd = ["python3", "-m", "pyt", "-t", "my_trigger_words.pyt", self.runFilename]
+            cmd = ["python3", "-m", "pyt", "-a", "r", "-vvv", "-pr", "./", "-t", "my_trigger_words.pyt", self.runFilename]
+
             result = subprocess.run(cmd, stdout=subprocess.PIPE)
+
+            for i in str(result.stdout).split('\\n'):
+                print(i)
 
             return str(result.stdout)
         

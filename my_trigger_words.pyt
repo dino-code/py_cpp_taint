@@ -9,6 +9,7 @@
 		"example.modify("
 	],
 	"sinks": {
+		"set(": {},
 		"fibonacci.compute_fibonacci(": {},
 		"pybindings.add(": {},
 		"wrap.add(": {},
@@ -44,6 +45,9 @@
 		"pybind_test.factorial(": {},
 		"pybind_test.add_arrays(": {},
 		"fibolib.fib(": {},
-		"print(": {}
+		"print(": {},
+		"get_name(": {},
+		"Motorcycle(": {}
+
 	}
 }
